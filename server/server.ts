@@ -6,7 +6,7 @@ const { PORT } = process.env
 const cors = require('cors')
 
 const app: Application = express()
-app.use(cors)
+app.use(cors())
 app.use(express.json())
 
 const { register, login} = require('./controllers/auth')
@@ -18,15 +18,15 @@ app.post('/register', register)
 
 app.post('/login', login)
 
-// app.get
+app.get('/posts', getAllPosts)
 
-// app.get
+app.get('/userposts/:userId', getCurrentUserPosts)
 
-// app.post
+app.post('/posts', isAuthenticated, addPost)
 
-// app.put
+app.put('/posts/:id', isAuthenticated, editPost)
 
-// app.delete
+app.delete('/posts/:id', isAuthenticated, deletePost)
 
 
 
