@@ -1,3 +1,5 @@
+import { Request, Response } from "express";
+
 module.exports = {
     getAllPosts: (req: Request, res: Response) => {
         console.log('all posts')
