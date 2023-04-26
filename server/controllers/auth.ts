@@ -18,14 +18,14 @@ module.exports = {
       const { username, password } = req.body
       const foundUser = await User.findOne({where: {username: username}})
       if(foundUser) {
-        res.send('cannot create user').status(400)
+        res.status(400).send('cannot create user')
       } else {
         const salt = bcrypt.genSaltSync(10)
         const hash = bcrypt.hashSync(password, salt)
         const newUser = await User.create({username: username, hashedPass: hash})
         const token = createToken(newUser.dataValues.username, newUser.dataValues.id)
         const exp = Date.now() + 1000 * 60 * 60 * 48
-        res.send({username: newUser.dataValues.username, id: newUser.dataValues.id, token: token, exp: exp}).status(200)
+        res.status(200).send({username: newUser.dataValues.username, id: newUser.dataValues.id, token, exp})
       }
     } catch (err) {
       console.error(err);
@@ -43,12 +43,12 @@ module.exports = {
         if (isAuthenticated) {
           const token = createToken(foundUser.dataValues.username, foundUser.dataValues.id)
           const exp = Date.now() + 1000 * 60 * 60 * 48
-          res.send({username: foundUser.dataValues.username, id: foundUser.dataValues.id, token: token, exp: exp}).status(200)
+          res.send({username: foundUser.dataValues.username, id: foundUser.dataValues.id, token, exp}).status(200)
         } else {
-          res.send('cannot log in').status(400)
+          res.status(400).send('cannot log in')
         }
       } else {
-        res.send('cannot log in').status(400)
+        res.status(400).send('cannot log in')
       }
     } catch (err) {
       console.error(err);
